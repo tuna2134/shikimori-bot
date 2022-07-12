@@ -26,7 +26,8 @@ class ShikimoriBot(commands.Bot):
 
     async def load_extensions(self):
         for file in listdir("cogs"):
-            await self.load_extension(f"cogs.{file.replace('.py', '')}")
+            if file.endswith(".py"):
+                await self.load_extension(f"cogs.{file.replace('.py', '')}")
 
     async def setup_hook(self):
         self.config["mysql"]["autocommit"] = True
