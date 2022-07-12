@@ -58,13 +58,14 @@ class News(commands.Cog):
         await ctx.send(view=page, embed=page.first)
     
     @news.command()
-    async def channel(self, ctx):
-        if ctx.channel.id in self.channelids:
+    async def channel(self, ctx, channel: discord.Channel | None = None):
+        channelid = channel.id or ctx.channel.id
+        if channelid in self.channelids:
             return await ctx.send("既に登録されています。")
-        self.channelids.append(ctx.channel.id)
+        self.channelids.append(channelid)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cur:
-                await cur.execute("INSERT INTO NewsChannel VALUES(%s);", (ctx.channel.id,))
+                await cur.execute("INSERT INTO NewsChannel VALUES(%s);", (channelid,))
         await ctx.send("登録しました。")
 
 
