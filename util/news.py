@@ -22,7 +22,7 @@ class News:
                 data.append(
                     {
                         "title": item.find("a").text,
-                        "link": f'https://shikimori-anime.com/{item.find("a")["href"][4:]}'
+                        "link": f'https://shikimori-anime.com/{item.find("a")["href"][3:]}'
                     }
                 )
         return data
