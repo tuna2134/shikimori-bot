@@ -36,7 +36,7 @@ class News(commands.Cog):
     async def send_notice(self, news):
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                for channelid in channelids:
+                for channelid in self.channelids:
                     channel = self.bot.get_channel(channelid)
                     if channel is not None:
                         await channel.send(embed=Embed(title=news["title"], description=news["link"]))
