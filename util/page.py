@@ -25,7 +25,7 @@ class Page(ui.View):
         self.current_page += 1
         if self.current_page > len(self.pages) - 1:
             self.current_page = 0
-        await self.update()
+        await self.update(interaction)
         
     async def update(self, interaction):
         await interaction.edit_original_message(embed=self.pages[self.current_page])
