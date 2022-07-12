@@ -40,7 +40,7 @@ class News(commands.Cog):
                     if channel is not None:
                         await channel.send(embed=Embed(title=news["title"], description=news["link"]))
                 await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
-                await cursor.execute("DELECT FROM News;")
+                await cursor.execute("DELETE FROM News;")
                 self.link = news["link"]
 
     @commands.group()
