@@ -28,7 +28,7 @@ class Page(ui.View):
         await self.update(interaction)
         
     async def update(self, interaction):
-        await interaction.edit_original_message(embed=self.pages[self.current_page])
+        await interaction.message.edit(embed=self.pages[self.current_page])
         
     @property
     def first(self):
