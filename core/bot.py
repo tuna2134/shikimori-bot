@@ -38,7 +38,7 @@ class ShikimoriBot(commands.Bot):
         await self.load_extensions()
         
     async def is_owner(self, user):
-        return user.id in [] or await super().is_owner()
+        return user.id in [739702692393517076] or await super().is_owner()
         
     def acquire(self, *args, **kwargs):
         return self.pool.acquire(*args, **kwargs)
