@@ -1,5 +1,5 @@
 from discord.ext import commands, tasks
-from util.news import News
+from util import News, Page
 
 import discord
 
@@ -46,6 +46,15 @@ class News(commands.Cog):
     @commands.group()
     async def news(self, ctx):
         pass
+    
+    @news.command()
+    async def show(self, ctx):
+        page = Page()
+        async with News() as news:
+            items = await news.get_news()
+            for item in items:
+                page.add_page(Embed(title=item["title"], description=item["link"]))
+        await ctx.send(view=page, embed=page.embed)
     
     @news.command()
     async def channel(self, ctx):
