@@ -10,7 +10,7 @@ else:
 from .types import Config
 
 from os import listdir
-from orjson import load
+from orjson import loads
 
 
 class ShikimoriBot(commands.Bot):
@@ -19,7 +19,7 @@ class ShikimoriBot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         with open("config.json") as f:
-            self.config = load(f)
+            self.config = loads(f.read())
 
         self.remove_command('help')
         self.version = "0.1.0"
