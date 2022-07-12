@@ -1,5 +1,5 @@
 from discord.ext import commands, tasks
-from util import News, Page
+from util import News as NewsFetch, Page
 
 import discord
 
@@ -28,7 +28,7 @@ class News(commands.Cog):
         
     @tasks.loop(minutes=1)
     async def notice(self):
-        async with News() as news:
+        async with NewsFetch() as news:
             news = await news.get_news()[0]
             if news["link"] != self.last:
                 await self.send_notice(news)
@@ -51,7 +51,7 @@ class News(commands.Cog):
     @news.command()
     async def show(self, ctx):
         page = Page()
-        async with News() as news:
+        async with NewsFetch() as news:
             items = await news.get_news()
             for item in items:
                 page.add_page(Embed(title=item["title"], description=item["link"]))
