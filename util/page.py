@@ -13,14 +13,19 @@ class Page(ui.View):
     def remove_page(self, index: int):
         self.pages.pop(index)
 
-    @ui.button(label="<")
+    @ui.button(emoji="⬅", custom_id="page_left")
     async def left(self, interaction, button):
         self.current_page -= 1
         if self.current_page < 0:
             self.current_page = len(self.pages) - 1
         await self.update(interaction)
         
-    @ui.button(label=">")
+    @ui.button(emoji="⏸", custom_id="page_close")
+    async def page_close(self, interaction, button):
+        self.close()
+        await interaction.response.edit_message(view=None)
+        
+    @ui.button(emoji="➡", custom_id="page_right")
     async def right(self, interaction, button):
         self.current_page += 1
         if self.current_page > len(self.pages) - 1:
@@ -28,8 +33,12 @@ class Page(ui.View):
         await self.update(interaction)
         
     async def update(self, interaction):
-        await interaction.response.edit_message(embed=self.pages[self.current_page])
+        embed = self.pages[self.current_page]
+        embed.set_footer(text=f"{self.current_page + 1}/{len(self.pages)}")
+        await interaction.response.edit_message(embed=embed)
         
     @property
     def first(self):
-        return self.pages[0]
+        embed = self.pages[0]
+        embed.set_footer(text=f"1/{len(self.pages)}")
+        return embed
