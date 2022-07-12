@@ -31,7 +31,7 @@ class ShikimoriBot(commands.Bot):
     async def setup_hook(self):
         self.config["mysql"]["autocommit"] = True
         self.config["mysql"]["loop"] = self.loop
-        await create_pool(**self.config["mysql"])
+        self.pool = await create_pool(**self.config["mysql"])
         await self.load_extension("jishaku")
         await self.load_extension("core.help")
         await self.load_extensions()
