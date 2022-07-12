@@ -13,9 +13,23 @@ class Page(ui.View):
     def remove_page(self, index: int):
         self.pages.pop(index)
 
-    @ui.button(label="左")
-    async def left(self, interaction. button):
+    @ui.button(label="<")
+    async def left(self, interaction, button):
         self.current_page -= 1
         if self.current_page < 0:
             self.current_page = len(self.pages) - 1
+        await self.update(interaction)
+        
+    @ui.button(label=">")
+    async def right(self, interaction, button):
+        self.current_page += 1
+        if self.current_page > len(self.pages) - 1:
+            self.current_page = 0
         await self.update()
+        
+    async def update(self, interaction):
+        await interaction.edit_original_message(embed=self.pages[self.current_page])
+        
+    @property
+    def first(self):
+        return self.pages[0]
