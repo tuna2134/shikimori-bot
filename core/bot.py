@@ -24,3 +24,6 @@ class ShikimoriBot(commands.Bot):
         await self.load_extension("jishaku")
         await self.load_extension("core.help")
         await self.load_extensions()
+        
+    def acquire(*args, **kwargs):
+        return self.pool.acquire(*args, **kwargs)
