@@ -1,0 +1,7 @@
+{
+    "token": "",
+    "mysql": {
+        "host": "", "user": "",
+        "password": "", "db": ""
+    }
+}
