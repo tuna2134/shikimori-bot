@@ -1,0 +1,5 @@
+orjson
+git+https://github.com/Rapptz/discord.py
+beautifulsoup4
+jishaku
+aiohttp
