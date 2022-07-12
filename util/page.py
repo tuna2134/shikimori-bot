@@ -22,7 +22,7 @@ class Page(ui.View):
         
     @ui.button(emoji="⏸", custom_id="page_close")
     async def page_close(self, interaction, button):
-        self.close()
+        self.stop()
         await interaction.response.edit_message(view=None)
         
     @ui.button(emoji="➡", custom_id="page_right")
