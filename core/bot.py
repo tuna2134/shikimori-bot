@@ -38,3 +38,8 @@ class ShikimoriBot(commands.Bot):
         
     def acquire(*args, **kwargs):
         return self.pool.acquire(*args, **kwargs)
+
+    async def close(self):
+        await super().close()
+        self.pool.close()
+        await self.pool.wait_closed()
