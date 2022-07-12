@@ -42,7 +42,7 @@ class News(commands.Cog):
                         await channel.send(embed=Embed(title=news["title"], description=news["link"]))
                 await cursor.execute("DELETE FROM News;")
                 await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
-                self.link = news["link"]
+                self.last = news["link"]
 
     @commands.group()
     async def news(self, ctx):
