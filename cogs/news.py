@@ -44,11 +44,15 @@ class News(commands.Cog):
                 await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
                 self.last = news["link"]
 
-    @commands.group()
+    @commands.group(
+        extras={"args": []}
+    )
     async def news(self, ctx):
         pass
     
-    @news.command()
+    @news.command(
+        extras={"args": []}
+    )
     async def show(self, ctx):
         page = Page()
         async with NewsFetch() as news:
@@ -57,7 +61,9 @@ class News(commands.Cog):
                 page.add_page(Embed(title=item["title"], description=item["link"]))
         await ctx.send(view=page, embed=page.first)
     
-    @news.command()
+    @news.command(
+        extras={"args": []}
+    )
     async def channel(self, ctx, channel: discord.Channel | None = None):
         channelid = channel.id or ctx.channel.id
         if channelid in self.channelids:
