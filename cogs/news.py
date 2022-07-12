@@ -20,7 +20,8 @@ class News(commands.Cog):
                 await cursor.execute("CREATE TABLE IF NOT EXISTS News(link TEXT);")
                 await cursor.execute("CREATE TABLE IF NOT EXISTS NewsChannel(channelid BIGINT);")
                 await cursor.execute("SELECT * FROM News LIMIT 1;")
-                self.last = (await cursor.fetchone())[0]
+                if self.last:
+                    self.last = (await cursor.fetchone())[0]
                 await cursor.execute("SELECT * FROM NewsChannel;")
                 self.channelids = [channelid for (channelid,) in await cursor.fetchall()]
         self.notice.start()
