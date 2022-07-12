@@ -39,8 +39,8 @@ class News(commands.Cog):
                     channel = self.bot.get_channel(channelid)
                     if channel is not None:
                         await channel.send(embed=Embed(title=news["title"], description=news["link"]))
-                await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
                 await cursor.execute("DELETE FROM News;")
+                await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
                 self.link = news["link"]
 
     @commands.group()
