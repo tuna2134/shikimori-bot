@@ -21,6 +21,8 @@ class News(commands.Cog):
                 await cursor.execute("CREATE TABLE IF NOT EXISTS NewsChannel(channelid BIGINT);")
                 await cursor.execute("SELECT * FROM News limit=1;")
                 self.last = await cursor.fetchone()[0]
+                await cursor.execute("SELECT * FROM NewsChannel;")
+                self.channelids = [channelid for (channelid,) in await cursor.fetchall()]
         self.notice.start()
         
     @tasks.loop(minutes=1)
@@ -33,13 +35,12 @@ class News(commands.Cog):
     async def send_notice(self, news):
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute("SELECT * FROM NewsChannel;")
-                for (channelid,) in await cursor.fetchall():
+                for channelid in channelids:
                     channel = self.bot.get_channel(channelid)
                     if channel is not None:
                         await channel.send(embed=Embed(title=news["title"], description=news["link"]))
-                await cursor.execute("INSERT INTO News(%s);", (news["link"],))
-                await cursor.execute("DELECT FROM News WHERE link=%s", (self.link,))
+                await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
+                await cursor.execute("DELECT FROM News;")
                 self.link = news["link"]
 
     @commands.group()
@@ -48,7 +49,13 @@ class News(commands.Cog):
     
     @news.command()
     async def channel(self, ctx):
-        pass
+        if ctx.channel.id in self.channelids:
+            return await ctx.send("既に登録されています。")
+        self.channelids.append(ctx.channel.id)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("INSERT INTO NewsChannel VALUES(%s);", (ctx.channel.id,))
+        await ctx.send("登録しました。")
 
 
 async def setup(bot):
