@@ -29,7 +29,7 @@ class News(commands.Cog):
     @tasks.loop(minutes=1)
     async def notice(self):
         async with NewsFetch() as news:
-            news = await news.get_news()[0]
+            news = (await news.get_news())[0]
             if news["link"] != self.last:
                 await self.send_notice(news)
     
