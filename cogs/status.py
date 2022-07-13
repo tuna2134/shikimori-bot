@@ -27,6 +27,7 @@ class Status(commands.Cog):
                 )
                 week = 60 * 60 * 24 * 7
                 await cursor.execute("DELETE FROM Status WHERE time <= %s;", (int(time()) - week,))
+                print("Changed")
 
 async def setup(bot):
     await bot.add_cog(Status(bot))
