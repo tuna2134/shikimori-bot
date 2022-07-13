@@ -34,6 +34,7 @@ class ShikimoriBot(commands.Bot):
         self.config["mysql"]["loop"] = self.loop
         self.pool = await create_pool(**self.config["mysql"])
         await self.load_extension("jishaku")
+        await self.load_extension("core.admin")
         await self.load_extension("core.help")
         await self.load_extensions()
         

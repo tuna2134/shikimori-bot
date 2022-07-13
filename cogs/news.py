@@ -20,10 +20,15 @@ class News(commands.Cog):
                 await cursor.execute("CREATE TABLE IF NOT EXISTS News(link TEXT);")
                 await cursor.execute("CREATE TABLE IF NOT EXISTS NewsChannel(channelid BIGINT);")
                 await cursor.execute("SELECT * FROM News LIMIT 1;")
-                if self.last:
-                    self.last = (await cursor.fetchone())[0]
+                result = await cursor.fetchone()
+                if result is not None:
+                    self.last = result[0]
                 await cursor.execute("SELECT * FROM NewsChannel;")
                 self.channelids = [channelid for (channelid,) in await cursor.fetchall()]
+        self.bot.loop.create_task(self.setup())
+
+    async def setup(self):
+        await self.bot.wait_until_ready()
         self.notice.start()
         
     @tasks.loop(minutes=1)
@@ -41,11 +46,16 @@ class News(commands.Cog):
                     failed = 0
                     if channel is not None:
                         try:
-                            await channel.send_webhook(embed=Embed(title=news["title"], description=news["link"]))
+                            await channel.send_webhook(
+                                embed=Embed(title=news["title"], description=news["link"]),
+                                username="Shikimori News",
+                                avatar_url=self.bot.user.avatar.url
+                            )
                         except Exception:
                             failed += 1
                     else:
-                        await cursor.execute("DELETE FROM NewsChannel WHERE channelid=%s;", (channel.id,))
+                        print("Channel not found")
+                        await cursor.execute("DELETE FROM NewsChannel WHERE channelid=%s;", (channelid,))
                 await cursor.execute("DELETE FROM News;")
                 await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
                 self.last = news["link"]
@@ -54,7 +64,8 @@ class News(commands.Cog):
         extras={"args": []}
     )
     async def news(self, ctx):
-        pass
+        if ctx.invoked_subcommand is None:
+            await ctx.send("Invalid news command.")
     
     @news.command(
         extras={"args": []}
