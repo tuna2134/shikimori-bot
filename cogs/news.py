@@ -38,8 +38,14 @@ class News(commands.Cog):
             async with conn.cursor() as cursor:
                 for channelid in self.channelids:
                     channel = self.bot.get_channel(channelid)
+                    failed = 0
                     if channel is not None:
-                        await channel.send(embed=Embed(title=news["title"], description=news["link"]))
+                        try:
+                            await channel.send_webhook(embed=Embed(title=news["title"], description=news["link"]))
+                        except Exception:
+                            failed += 1
+                    else:
+                        await cursor.execute("DELETE FROM NewsChannel WHERE channelid=%s;", (channel.id,))
                 await cursor.execute("DELETE FROM News;")
                 await cursor.execute("INSERT INTO News VALUES(%s);", (news["link"],))
                 self.last = news["link"]
