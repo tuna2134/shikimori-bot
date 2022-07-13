@@ -21,7 +21,7 @@ class Page(ui.View):
             self.current_page = len(self.pages) - 1
         await self.update(interaction)
 
-    @ui.button(emoji="⏸", custom_id="page_close")
+    @ui.button(emoji="⏹", custom_id="page_close")
     async def page_close(self, interaction, button):
         self.stop()
         await interaction.response.edit_message(view=None)
