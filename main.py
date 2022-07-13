@@ -3,7 +3,10 @@ from core import ShikimoriBot
 import discord
 
 
-bot = ShikimoriBot(command_prefix="sh.", intents=discord.Intents.all())
+bot = ShikimoriBot(
+    command_prefix="sh.", intents=discord.Intents.all(),
+    activity=discord.Game("Now starting...")
+)
 
 
 @bot.event
