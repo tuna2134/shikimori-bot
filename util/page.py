@@ -37,6 +37,9 @@ class Page(ui.View):
         embed = self.pages[self.current_page]
         embed.set_footer(text=f"{self.current_page + 1}/{len(self.pages)}")
         await interaction.response.edit_message(embed=embed)
+    
+    async def send(self, channel: discord.TextChannel, **kwargs):
+        return await channel.send(embed=self.first, view=self, **kwargs)
         
     @property
     def first(self):
