@@ -23,7 +23,7 @@ class Status(commands.Cog):
                 await cursor.execute(
                     "INSERT INTO Status VALUES(%s, %s, %s, %s, %s);",
                     (int(time()), str(psutil.cpu_percent(interval=None)), str(psutil.virtual_memory().percent),
-                    str(psutil.disk_usage("./").percent), str(round(self.bot.latency * 1000, 1))
+                    str(psutil.disk_usage("./").percent), str(round(self.bot.latency * 1000, 1)))
                 )
                 week = 60 * 60 * 24 * 7
                 await cursor.execute("DELETE FROM Status WHERE time <= %s;", (int(time()) - week,))
