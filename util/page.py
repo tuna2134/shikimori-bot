@@ -1,4 +1,4 @@
-from discord import ui, Embed
+from discord import ui, Embed, Interaction
 
 
 class Page(ui.View):
@@ -19,12 +19,12 @@ class Page(ui.View):
         if self.current_page < 0:
             self.current_page = len(self.pages) - 1
         await self.update(interaction)
-        
+
     @ui.button(emoji="⏸", custom_id="page_close")
     async def page_close(self, interaction, button):
         self.stop()
         await interaction.response.edit_message(view=None)
-        
+
     @ui.button(emoji="➡", custom_id="page_right")
     async def right(self, interaction, button):
         self.current_page += 1
