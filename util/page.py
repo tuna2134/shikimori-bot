@@ -1,5 +1,7 @@
 from discord import ui, Embed, Interaction
 
+import discord
+
 
 class Page(ui.View):
     def __init__(self, *args, **kwargs):
