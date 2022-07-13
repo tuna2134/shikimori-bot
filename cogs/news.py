@@ -64,14 +64,14 @@ class News(commands.Cog):
     @news.command(
         extras={"args": []}
     )
-    async def channel(self, ctx, channel: discord.Channel | None = None):
-        channelid = channel.id or ctx.channel.id
-        if channelid in self.channelids:
+    async def channel(self, ctx, channel: discord.TextChannel | None = None):
+        channel = channel or ctx.channel
+        if channel.id in self.channelids:
             return await ctx.send("既に登録されています。")
-        self.channelids.append(channelid)
+        self.channelids.append(channel.id)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cur:
-                await cur.execute("INSERT INTO NewsChannel VALUES(%s);", (channelid,))
+                await cur.execute("INSERT INTO NewsChannel VALUES(%s);", (channel.id,))
         await ctx.send("登録しました。")
 
 
