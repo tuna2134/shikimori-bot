@@ -3,6 +3,7 @@ from discord import ui, Embed, Interaction
 
 class Page(ui.View):
     def __init__(self, *args, **kwargs):
+        self.ext = kwargs.pop("ext", None)
         super().__init__(*args, **kwargs)
         self.pages = []
         self.current_page = 0
