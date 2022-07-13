@@ -59,7 +59,7 @@ class News(commands.Cog):
             items = await news.get_news()
             for item in items:
                 page.add_page(Embed(title=item["title"], description=item["link"]))
-        await ctx.send(view=page, embed=page.first)
+        await view.send(ctx.channel)
     
     @news.command(
         extras={"args": []}
