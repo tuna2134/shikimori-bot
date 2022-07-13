@@ -7,3 +7,5 @@ async def send_webhook(self, *args, **kwargs):
     if webhook is None:
         webhook = await self.create_webhook(name=WEBHOOK_NAME)
     await webhook.send(*args, **kwargs)
+
+discord.TextChannel.send_webhook = send_webhook
